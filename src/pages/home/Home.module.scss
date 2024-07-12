@@ -1,0 +1,64 @@
+$cover-size: 40px;
+.Home {
+  width: 100%;
+  height: 100vh;
+  background: #191919;
+}
+.TrackListBox {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+  background: #191919;
+  border-radius: 6px;
+  cursor: pointer;
+  &:hover {
+    background: #2d2d2d;
+  }
+  .cover {
+    flex-shrink: 0;
+    width: 50px;
+    .coverImg {
+      display: block;
+      width: $cover-size;
+      height: $cover-size;
+      border-radius: 6px;
+    }
+  }
+  .title {
+    flex-grow: 0;
+    width: 30%;
+    padding-right: 10px;
+    overflow: hidden;
+    line-height: $cover-size;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .artists {
+    flex-grow: 0;
+    width: 30%;
+    padding-right: 10px;
+    overflow: hidden;
+    line-height: $cover-size;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .album {
+    width: 30%;
+    padding-right: 10px;
+    overflow: hidden;
+    line-height: $cover-size;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .time {
+    width: 15%;
+    padding-right: 10px;
+    overflow: hidden;
+    line-height: $cover-size;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
