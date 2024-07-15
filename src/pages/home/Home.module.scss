@@ -99,12 +99,15 @@ $cover-size: 40px;
     }
   }
   .cover {
+    position: relative;
     flex-shrink: 0;
-    width: 50px;
+    width: 40px;
+    margin-right: 12px;
     .coverImg {
       display: block;
       width: $cover-size;
       height: $cover-size;
+      object-fit: cover;
       border-radius: 6px;
     }
   }

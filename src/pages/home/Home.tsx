@@ -1,12 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
-import { observer } from 'mobx-react-lite';
+import { observer, useLocalObservable } from 'mobx-react-lite';
 import { formatTime } from '@/common/utils';
 import { StoreClass } from './store/store';
 import styles from './Home.module.scss';
-import { selectTrack } from './store/methods';
+import { pauseTrack, playTrack, selectTrack } from './store/methods';
 import { ActiveTrack } from './ActiveTrack';
 import { LeftMenu } from './LeftMenu';
+import { Track } from './store/types';
+import { Pause, Play, Playing } from './icons';
 
 export const Home = observer(() => {
   const store = useState(() => new StoreClass())[0];
@@ -31,6 +33,90 @@ export const Home = observer(() => {
       </div>
       <div className={styles.lowerPart}>
         <ActiveTrack store={store} />
+      </div>
+    </div>
+  );
+});
+
+const PlayControl = observer(({
+  store,
+  track,
+}: {
+  store: StoreClass;
+  track: Track;
+}) => {
+  const local = useLocalObservable(() => ({
+    hover: false,
+    get icon() {
+      if (track.id === store.activeTrackId) {
+        if (store.trackState.status === 'playing') {
+          if (this.hover) {
+            return 'pause';
+          }
+          return 'bumping';
+        }
+        return 'play';
+      }
+      if (this.hover) {
+        return 'play';
+      }
+      return '';
+    },
+    click() {
+      if (track.id === store.activeTrackId) {
+        if (this.icon === 'play') {
+          playTrack(store);
+        }
+        else if (this.icon === 'pause') {
+          pauseTrack(store);
+        }
+      }
+      else {
+        selectTrack(store, track);
+      }
+    },
+  }));
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+      }}
+      onPointerEnter={() => {
+        local.hover = true;
+      }}
+      onPointerLeave={() => {
+        local.hover = false;
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          alignItems: 'center',
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          local.click();
+        }}
+      >
+        {local.icon === 'play'
+          ? <Play width={15} />
+          : null}
+        {local.icon === 'pause'
+          ? <Pause width={15} />
+          : null}
+        {local.icon === 'bumping'
+          ? <Playing width={15} />
+          : null}
       </div>
     </div>
   );
@@ -65,6 +151,7 @@ const TrackList = observer(({ store }: { store: StoreClass; }) => {
                 src={track.album.cover}
                 alt=""
               />
+              <PlayControl store={store} track={track} />
             </div>
             <div className={styles.title}>
               {

@@ -108,8 +108,8 @@ export const ActiveTrack = observer(({ store }: { store: StoreClass; }) => {
                 }}
               >
                 {store.trackState.status === 'paused'
-                  ? <Play />
-                  : <Pause />}
+                  ? <Play width={20} />
+                  : <Pause width={20} />}
               </div>
               <div style={{
                 fontSize: 12,
@@ -162,6 +162,7 @@ const ProgressBar = observer(({
       onPointerDown={(e) => {
         pointerDownOnProgressBar(store, e);
       }}
+      draggable={false}
     >
       <div style={{
         position: 'absolute',
@@ -189,6 +190,7 @@ const ProgressBar = observer(({
             borderRadius: 7,
             background: 'white',
           }}
+          draggable={false}
           onPointerDown={(e) => {
             e.stopPropagation();
             pointerDownOnRoundButton(store, e);
@@ -216,7 +218,7 @@ const TrackInfo = observer(({ store }: { store: StoreClass; }) => {
 
 const SegmentBar = observer(({ store }: { store: StoreClass; }) => {
   return (
-    <div className={styles.SegmentBar}>
+    <div className={styles.SegmentBar} draggable={false}>
       <div style={{
         position: 'absolute',
         left: `${store.trackState.segment.start * 100}%`,

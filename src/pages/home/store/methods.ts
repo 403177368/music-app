@@ -8,15 +8,16 @@ export function selectTrack(store: StoreClass, track: Track) {
   if (store.audioElement) {
     store.audioElement.currentTime = 0;
   }
+  playTrack(store);
 }
 
 export function playTrack(store: StoreClass) {
-  store.trackState.status = 'playing';
+  // store.trackState.status = 'playing';
   store.audioElement?.play();
 }
 
 export function pauseTrack(store: StoreClass) {
-  store.trackState.status = 'paused';
+  // store.trackState.status = 'paused';
   store.audioElement?.pause();
 }
 
