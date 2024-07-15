@@ -1,0 +1,40 @@
+@import "./common";
+.LeftMenu {
+  box-sizing: border-box;
+  width: 200px;
+  margin-right: 15px;
+  padding: 15px;
+  overflow: scroll;
+  color: white;
+  background: rgb(255 255 255 / 5%);
+  border-radius: $primary-radius;
+  .header {
+    display: flex;
+    margin-bottom: 20px;
+    .logo {
+      width: 38px;
+      height: 38px;
+      margin-right: 15px;
+      background: $primary;
+      border-radius: 100%;
+    }
+    .title {
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 38px;
+    }
+  }
+  .item {
+    box-sizing: border-box;
+    padding: 12px 15px;
+    color: $text-main;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    &:hover {
+      color: white;
+      background: $hover;
+    }
+  }
+}

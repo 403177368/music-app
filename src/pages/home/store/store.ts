@@ -7,6 +7,7 @@ import { Playlist, Track, User } from './types';
 interface TrackState {
   status: 'playing' | 'paused';
   current: number;
+  duration: number;
 }
 
 configure({
@@ -77,5 +78,14 @@ export class StoreClass {
     trackState: TrackState = {
       status: 'paused',
       current: 0,
+      duration: 0,
     };
+
+  @computed
+  get trackCurrentPercent() {
+    if (this.trackState.duration !== 0) {
+      return this.trackState.current / this.trackState.duration * 100;
+    }
+    return 0;
+  }
 }
