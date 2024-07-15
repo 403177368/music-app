@@ -57,17 +57,34 @@ $cover-size: 40px;
   }
 }
 .TrackListBox {
-  display: flex;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 10px;
-  color: white;
-  font-size: 14px;
-  background: #191919;
-  border-radius: 6px;
-  cursor: pointer;
-  &:hover {
-    background: $hover;
+  .trackListHead {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 10px;
+    color: #565656;
+    font-size: 12px;
+    background: #191919;
+    border-bottom: 1px solid #565656;
+    border-radius: 6px;
+  }
+  .trackListBody {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    background: #191919;
+    border-radius: 6px;
+    cursor: pointer;
+    &:hover {
+      background: $hover;
+    }
+    &.selected {
+      background: $hover;
+    }
   }
   .cover {
     flex-shrink: 0;
