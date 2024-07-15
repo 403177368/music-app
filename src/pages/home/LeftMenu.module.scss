@@ -1,10 +1,11 @@
 @import "./common";
 .LeftMenu {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   width: 200px;
   margin-right: 15px;
   padding: 15px;
-  overflow: scroll;
   color: white;
   background: rgb(255 255 255 / 5%);
   border-radius: $primary-radius;
@@ -25,16 +26,20 @@
       line-height: 38px;
     }
   }
-  .item {
-    box-sizing: border-box;
-    padding: 12px 15px;
-    color: $text-main;
-    font-size: 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    &:hover {
-      color: white;
-      background: $hover;
+  .scroller {
+    flex: 1;
+    overflow: scroll;
+    .item {
+      box-sizing: border-box;
+      padding: 12px 15px;
+      color: $text-main;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      &:hover {
+        color: white;
+        background: $hover;
+      }
     }
   }
 }

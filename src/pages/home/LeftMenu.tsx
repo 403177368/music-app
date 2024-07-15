@@ -11,7 +11,7 @@ export const LeftMenu = observer(() => {
           MusicApp
         </div>
       </div>
-      <div>
+      <div className={styles.scroller}>
         <div className={styles.item}>Home</div>
         <div className={styles.item}>Browse</div>
         <div className={styles.item}>Playlists</div>

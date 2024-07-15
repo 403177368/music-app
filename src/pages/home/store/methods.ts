@@ -121,3 +121,12 @@ export function onPointerMove(
     }
   }
 }
+
+export function onPointerUp(store: StoreClass, e: PointerEvent) {
+  if (store.currentStatus === 'draggingRoundButton') {
+    if (store.audioElement) {
+      store.audioElement.currentTime = store.trackState.current;
+    }
+  }
+  store.currentStatus = '';
+}

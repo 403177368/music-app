@@ -1,10 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { formatTime } from '@/common/utils';
 import { StoreClass } from './store/store';
 import {
-  onPointerMove, pauseTrack, playTrack, pointerDownOnProgressBar, pointerDownOnRoundButton,
+  onPointerMove, onPointerUp, pauseTrack, playTrack, pointerDownOnProgressBar, pointerDownOnRoundButton,
   pointerDownOnSegmentEnd,
   pointerDownOnSegmentStart,
 } from './store/methods';
@@ -52,10 +53,7 @@ export const ActiveTrack = observer(({ store }: { store: StoreClass; }) => {
     }
 
     function pointerUp(e: PointerEvent) {
-      if (store.audioElement) {
-        store.audioElement.currentTime = store.trackState.current;
-      }
-      store.currentStatus = '';
+      onPointerUp(store, e);
     }
 
     window.addEventListener('pointermove', pointerMove);
@@ -90,53 +88,17 @@ export const ActiveTrack = observer(({ store }: { store: StoreClass; }) => {
                 borderRadius: 8,
                 marginRight: 8,
               }}
+              alt=""
             />
-            <div style={{
-              width: 200,
-              paddingTop: 4,
-              marginRight: 10,
-            }}
-            >
-              <div style={{
-                color: 'white',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                fontSize: 14,
-              }}
-              >
-                {store.activeTrack.title}
-              </div>
-              <div
-                style={{
-                  color: 'white',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  fontSize: 12,
-                }}
-              >
-                {store.activeTrack.artists.map((artist) => artist.name).join(', ')}
-              </div>
-            </div>
+            <TrackInfo store={store} />
             <div style={{
               display: 'flex',
+              flex: 1,
+              // overflow: 'hidden',
             }}
             >
               <div
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: '100%',
-                  background: '#3c3c3c',
-                  textAlign: 'center',
-                  lineHeight: '50px',
-                  color: 'white',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginRight: 10,
-                }}
+                className={styles.playBtn}
                 onClick={() => {
                   if (store.trackState.status === 'paused') {
                     playTrack(store);
@@ -151,19 +113,20 @@ export const ActiveTrack = observer(({ store }: { store: StoreClass; }) => {
                   : <Pause />}
               </div>
               <div style={{
-                fontSize: 14,
+                fontSize: 12,
                 width: 42,
                 textAlign: 'center',
                 color: 'white',
                 lineHeight: '50px',
-                marginRight: 8,
+                marginRight: 4,
               }}
               >
                 {formatTime(store.trackState.current)}
               </div>
               <div style={{
                 position: 'relative',
-                width: 200,
+                minWidth: 100,
+                flex: 1,
                 height: '100%',
               }}
               >
@@ -171,12 +134,12 @@ export const ActiveTrack = observer(({ store }: { store: StoreClass; }) => {
                 <SegmentBar store={store} />
               </div>
               <div style={{
-                fontSize: 14,
+                fontSize: 12,
                 width: 42,
                 textAlign: 'center',
                 color: 'white',
                 lineHeight: '50px',
-                marginLeft: 8,
+                marginLeft: 4,
               }}
               >
                 {formatTime(store.trackState.duration)}
@@ -200,16 +163,7 @@ const ProgressBar = observer(({
 
   return (
     <div
-      style={{
-        position: 'relative',
-        left: 0,
-        top: 23,
-        width: '100%',
-        height: 4,
-        borderRadius: 2,
-        background: '#505050',
-        cursor: 'pointer',
-      }}
+      className={styles.ProgressBar}
       ref={progressBarRef}
       onPointerDown={(e) => {
         pointerDownOnProgressBar(store, e);
@@ -234,10 +188,10 @@ const ProgressBar = observer(({
         <div
           style={{
             position: 'absolute',
-            left: -7,
-            top: -7,
-            width: 14,
-            height: 14,
+            left: -5,
+            top: -5,
+            width: 10,
+            height: 10,
             borderRadius: 7,
             background: 'white',
           }}
@@ -251,17 +205,24 @@ const ProgressBar = observer(({
   );
 });
 
+const TrackInfo = observer(({ store }: { store: StoreClass; }) => {
+  if (!store.activeTrack) return null;
+
+  return (
+    <div className={styles.TrackInfo}>
+      <div className={styles.trackTitle}>
+        {store.activeTrack.title}
+      </div>
+      <div className={styles.trackArtists}>
+        {store.activeTrack.artists.map((artist) => artist.name).join(', ')}
+      </div>
+    </div>
+  );
+});
+
 const SegmentBar = observer(({ store }: { store: StoreClass; }) => {
   return (
-    <div style={{
-      position: 'absolute',
-      left: 0,
-      bottom: 0,
-      width: '100%',
-      height: 2,
-      background: '#505050',
-    }}
-    >
+    <div className={styles.SegmentBar}>
       <div style={{
         position: 'absolute',
         left: `${store.trackState.segment.start * 100}%`,
@@ -279,16 +240,7 @@ const SegmentBar = observer(({ store }: { store: StoreClass; }) => {
       }}
       >
         <div
-          style={{
-            position: 'absolute',
-            left: -2,
-            top: -4,
-            width: 4,
-            height: 10,
-            background: 'white',
-            borderRadius: 2,
-            cursor: 'pointer',
-          }}
+          className={styles.shortBar}
           onPointerDown={(e) => {
             pointerDownOnSegmentStart(store, e);
           }}
@@ -300,16 +252,7 @@ const SegmentBar = observer(({ store }: { store: StoreClass; }) => {
       }}
       >
         <div
-          style={{
-            position: 'absolute',
-            left: -2,
-            top: -4,
-            width: 4,
-            height: 10,
-            background: 'white',
-            borderRadius: 2,
-            cursor: 'pointer',
-          }}
+          className={styles.shortBar}
           onPointerDown={(e) => {
             pointerDownOnSegmentEnd(store, e);
           }}
