@@ -1,14 +1,9 @@
 {
-  "name": "app-template",
-  "version": "0.0.0",
+  "name": "music-app",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "NEXT_PUBLIC_ENV=development next dev",
-    "build:pre": "NODE_ENV=production NEXT_PUBLIC_ENV=pre npm run __build",
-    "build:beta": "NODE_ENV=production NEXT_PUBLIC_ENV=beta npm run __build",
-    "build:release": "NODE_ENV=production NEXT_PUBLIC_ENV=release npm run __build",
-    "__build": "next lint && npx tsc --project ./server/tsconfig.json && next build",
-    "start": "NODE_ENV=production node ./server_build/server.js",
     "rebase:onto:master": "node ./scripts/rebase.js",
     "deploy": "node ./scripts/deploy.js"
   },

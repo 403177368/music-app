@@ -61,7 +61,6 @@ export const ActiveTrack = observer(({ store }: { store: StoreClass; }) => {
     window.addEventListener('pointercancel', pointerUp);
 
     return () => {
-      store.progressBar = null;
       window.removeEventListener('pointermove', pointerMove);
       window.removeEventListener('pointerup', pointerUp);
       window.removeEventListener('pointercancel', pointerUp);
@@ -156,15 +155,10 @@ const ProgressBar = observer(({
 }: {
   store: StoreClass;
 }) => {
-  const progressBarRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    store.progressBar = progressBarRef.current;
-  }, [store.activeTrack]);
-
   return (
     <div
       className={styles.ProgressBar}
-      ref={progressBarRef}
+      ref={(el) => { store.progressBar = el; }}
       onPointerDown={(e) => {
         pointerDownOnProgressBar(store, e);
       }}

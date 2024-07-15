@@ -2,6 +2,7 @@ import {
   computed, configure, makeObservable, observable,
 } from 'mobx';
 import { generateUUID, getAlbumCover, getDuration } from '@/common/utils';
+import { enableStaticRendering } from 'mobx-react-lite';
 import { Playlist, Track, User } from './types';
 
 interface TrackState {
@@ -12,6 +13,10 @@ interface TrackState {
     start: number;
     end: number;
   };
+}
+
+if (typeof window === 'undefined') {
+  enableStaticRendering(true);
 }
 
 configure({
